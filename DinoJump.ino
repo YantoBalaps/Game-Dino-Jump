@@ -49,25 +49,29 @@ void setup() {
 
 void loop() {
   // Cek apakah permainan berakhir
-if (gameOver) {
+  if (gameOver) {
     lcd.clear();
     
-    // Animasi untuk tampilan "Try again" di tengah
+    // Animasi untuk tampilan "Loser"
     for (int i = 0; i < 3; i++) {
-      lcd.setCursor(2, 0);    // Tampilkan "Try again" di baris pertama (posisi 2 untuk center)
-      lcd.print("^^Try Again^^");
+      lcd.setCursor(4, 0);    // Tampilkan "Loser" di baris pertama
+      lcd.print("*Loser*");
       delay(300);
       lcd.clear();
       delay(300);
     }
     
-    lcd.setCursor(3, 0);      // Tampilkan "Loser" di tengah pada baris pertama (posisi 3 untuk center)
-    lcd.print(">> Loser <<");  
+    lcd.setCursor(4, 0);    
+    lcd.print(">> Loser <<");  // Teks akhir yang lebih menarik
     
-    // Tampilkan skor akhir
-    lcd.setCursor(5, 1);      // Posisi center untuk teks "Score: "
-    lcd.print(" Score: ");
+    // Tampilkan skor dengan bingkai sederhana
+    lcd.setCursor(2, 1);
+    lcd.print("----------------");
+    lcd.setCursor(5, 1);
+    lcd.print("Score: ");
     lcd.print(score);
+    lcd.setCursor(13, 1);
+    lcd.print("-");
 
     // Buzzer berbunyi saat game over
     tone(buzzerPin, 1000, 500); // Suara buzzer dengan frekuensi 1000 Hz selama 500 ms
@@ -76,15 +80,12 @@ if (gameOver) {
     while (digitalRead(buttonPin) == HIGH) {
       // Menunggu tombol ditekan
     }
-
-    // Tunggu sejenak setelah tombol ditekan, sebelum reset game
-    delay(500);
     
-    // Reset game dan skor setelah tombol ditekan
-    score = 0;          // Reset skor saat game benar-benar restart
+    // Reset game dan skor
+    score = 0;
     gameOver = false;
-    jumpHeight = 0;     // Reset tinggi lompat
-    delay(500);         // Tambahkan sedikit jeda setelah reset
+    jumpHeight = 0; 
+    delay(500); // Tambahkan sedikit jeda setelah reset
   } else {
     // loop batu bergerak
     for (int position = 15; position >= 0; position--) {
@@ -121,13 +122,8 @@ if (gameOver) {
       }
 
       // Tampilkan skor di sudut kanan atas
-      lcd.setCursor(13, 0);         
-      if(score < 10) {
-        lcd.print("  ");  // Tambahkan spasi agar skor dengan satu digit terlihat rapi
-      } else if (score < 100) {
-        lcd.print(" ");   // Tambahkan satu spasi agar skor dua digit terlihat rapi
-      }
-      lcd.print(score);  // Cetak skor di posisi kanan atas
+      lcd.setCursor(15, 0);         
+      lcd.print(score);    
 
       // Tampilkan batu di baris kedua
       lcd.setCursor(position, 1);    
